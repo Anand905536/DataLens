@@ -1,0 +1,27 @@
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+
+# Uploaded files
+uploads/
+
+# Python / ML caches
+.cache/
+.pytest_cache/
+
+# Test documents
+*.pdf
+
+# OS files
+.DS_Store
+Thumbs.db
