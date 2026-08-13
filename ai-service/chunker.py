@@ -15,4 +15,5 @@ def chunk_text(text,chunk_size=500,overlap=100):
 
         start+=chunk_size-overlap
 
-        return chunks
+
+    return chunks

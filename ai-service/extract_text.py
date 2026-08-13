@@ -1,18 +1,18 @@
 from pypdf import PdfReader
-from llm_extractor import extract_report
 
-pdf_path="../server/uploads/1786423126880-test-cbc-report.pdf"
 
-reader=PdfReader(pdf_path)
+def extract_pdf_text(pdf_path):
 
-text=""
+    reader = PdfReader(pdf_path)
 
-for page in reader.pages:
-    page_text=page.extract_text()
+    text = ""
 
-    if page_text:
-        text+=page_text+"\n"
+    for page in reader.pages:
 
-    print("===========EXTRACTED TEXT=============")
-    result=extract_report(text)
-    print(result.model_dump_json(indent=2))
+        page_text = page.extract_text()
+
+        if page_text:
+
+            text += page_text + "\n"
+
+    return text
