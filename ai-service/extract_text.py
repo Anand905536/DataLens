@@ -15,4 +15,16 @@ def extract_pdf_text(pdf_path):
 
             text += page_text + "\n"
 
-    return text
+    if text.strip():
+
+        return text
+    
+    images=convert_from_path(pdf_path)
+
+    ocr_text=""
+
+    for image in images:
+
+        ocr_text += pytesseract.image_to_string(image)
+
+    return ocr_text

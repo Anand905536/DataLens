@@ -1,7 +1,7 @@
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, PointStruct
+from qdrant_client.models import Filter
 import uuid
-
 
 client = QdrantClient(
     host="localhost",
@@ -9,7 +9,6 @@ client = QdrantClient(
 )
 
 COLLECTION_NAME = "documents"
-
 
 def create_collection():
 
@@ -54,3 +53,13 @@ def add_chunk(text, vector, metadata):
     )
 
     print("Chunk added")
+
+def search_chunks(query_vector,limit=5):
+
+    results=client.query_points(
+        collection_name=COLLECTION_NAME,
+        query=query_vector,
+        limit=limit
+    )  
+
+    return results.points

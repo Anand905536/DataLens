@@ -2,6 +2,7 @@ from extract_text import extract_pdf_text
 from chunker import chunk_text
 from embeddings import create_embedding
 from vector_store import add_chunk
+import os
 
 
 def ingest_document(pdf_path):
@@ -15,6 +16,7 @@ def ingest_document(pdf_path):
         vector = create_embedding(chunk)
 
         metadata = {
+            "file_name":os.path.basename(pdf_path),
             "chunk_number": index
         }
 
