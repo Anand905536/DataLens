@@ -13,13 +13,14 @@ def retrieve(question):
     for result in results:
 
         chunks.append(
-            {
-                "text": result.payload["text"],
-                "source": result.payload.get(
-                    "file_name",
-                    result.payload.get("fileName", "Unknown")
-                )
-            }
-        )
+    {
+        "text": result.payload["text"],
+        "source": result.payload.get(
+            "file_name",
+            result.payload.get("fileName", "Unknown")
+        ),
+        "score": result.score
+    }
+)
 
     return chunks

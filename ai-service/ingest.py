@@ -16,9 +16,10 @@ def ingest_document(pdf_path):
         vector = create_embedding(chunk)
 
         metadata = {
-            "file_name":os.path.basename(pdf_path),
-            "chunk_number": index
-        }
+    "document_id": os.path.basename(pdf_path),
+    "file_name": os.path.basename(pdf_path),
+    "chunk_number": index
+}
 
         add_chunk(
             text=chunk,

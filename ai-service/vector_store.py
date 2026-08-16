@@ -54,7 +54,7 @@ def add_chunk(text, vector, metadata):
 
     print("Chunk added")
 
-def search_chunks(query_vector,limit=5):
+def search_chunks(query_vector,limit=30):
 
     results=client.query_points(
         collection_name=COLLECTION_NAME,

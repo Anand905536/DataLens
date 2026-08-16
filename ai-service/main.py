@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File,HTTPException
 from vector_store import client,COLLECTION_NAME
 from typing import List
 import shutil
@@ -16,7 +16,6 @@ def home():
     return {
         "message": "DataLens API is running"
     }
-
 
 @app.post("/upload")
 def upload_pdf(files: List[UploadFile] = File(...)):
@@ -49,8 +48,9 @@ def upload_pdf(files: List[UploadFile] = File(...)):
 
     return {
         "message": "Documents indexed successfully",
-        "files": uploaded_files
+        "uploaded_files": uploaded_files
     }
+
 
 
 @app.post("/ask")
@@ -81,7 +81,49 @@ def get_documents():
 
         if file_name:
             documents.add(file_name)
-            
+
     return{
         "documents":list(documents)
+    }
+
+
+
+
+# delete function 
+@app.delete("/documents/{file_name}")
+def delete_document(file_name:str):
+
+    records,_=client.scroll(
+        collection_name=COLLECTION_NAME,
+        limit=10000
+    )
+
+    point_ids=[]
+
+    for record in records:
+
+        current_file=record.payload.get(
+            "file_name",
+            record.payload.get("fileName")
+        )
+
+        if current_file==file_name:
+
+            point_ids.append(record.id)
+
+    if not point_ids:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found"
+        )        
+
+    client.delete(
+        collection_name=COLLECTION_NAME,
+        points_selector=point_ids
+    )
+
+
+    return {
+        "message":f"{file_name} deleted successfully"
     }
