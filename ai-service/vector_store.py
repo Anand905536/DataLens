@@ -3,9 +3,11 @@ from qdrant_client.models import Distance, VectorParams, PointStruct
 from qdrant_client.models import Filter
 import uuid
 
+import os
+
 client = QdrantClient(
-    host="localhost",
-    port=6333
+    url=os.getenv["QDRANT_URL"],
+    api_key=os.getenv["QDRANT_API_KEY"]
 )
 
 COLLECTION_NAME = "documents"
