@@ -1,11 +1,13 @@
 from extract_text import extract_pdf_text
 from chunker import chunk_text
 from embeddings import create_embedding
-from vector_store import add_chunk
+from vector_store import add_chunk, create_collection
 import os
 
 
 def ingest_document(pdf_path):
+
+    create_collection()
 
     text = extract_pdf_text(pdf_path)
 

@@ -37,15 +37,15 @@ if the answer is not present in the context,reply exactly:
 
 i couldn't find this information int he uploaded documents.
 """
-    response=client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=[
-            {
-                "role":"user",
-                "content":prompt
-            }
-        ]
-     )
+    response = client.chat.completions.create(
+    model="openai/gpt-oss-20b",
+    messages=[
+        {
+            "role": "user",
+            "content": prompt
+        }
+    ]
+)
     answer = response.choices[0].message.content
 
     return {

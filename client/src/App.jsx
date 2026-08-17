@@ -26,7 +26,7 @@ function App() {
       setMessage("Uploading...");
 
       const response = await fetch(
-        "https://shiny-goggles-6pgxrxpxqqpf5v4p-5000.app.github.dev/api/reports",
+        "https://regally-senator-entitle.ngrok-free.dev/api/reports",
         {
           method: "POST",
           body: formData,
