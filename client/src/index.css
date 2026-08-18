@@ -11,6 +11,13 @@ body,
     margin:0;
     background: #212121;
 }
+.chat-section::-webkit-scrollbar{
+   display:none;
+}
+.chat-section{
+   -ms-overflow-style:none;
+   scrollbar-width:none;
+}
 
 @theme inline {
     --font-heading:var(--font-sans);

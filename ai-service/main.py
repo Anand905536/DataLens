@@ -1,5 +1,6 @@
 from fastapi import FastAPI, UploadFile, File,HTTPException
 from vector_store import client,COLLECTION_NAME
+from fastapi.middleware.cors import CORSMiddleware
 # from typing import List
 import shutil
 import os
@@ -9,6 +10,13 @@ from ask import ask_questions
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],# Or ["*"] to allow all
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def home():
@@ -51,6 +59,7 @@ def ask(question: str):
     answer = ask_questions(question)
 
     return {
+        "question":question,
         "answer": answer
     }
 

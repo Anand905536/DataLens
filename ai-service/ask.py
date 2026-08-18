@@ -50,5 +50,6 @@ i couldn't find this information int he uploaded documents.
 
     return {
         "answer":answer,
-        "sources":sources
+        "sources":sources,
+        "question":question
     }
