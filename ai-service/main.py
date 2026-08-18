@@ -1,6 +1,6 @@
 from fastapi import FastAPI, UploadFile, File,HTTPException
 from vector_store import client,COLLECTION_NAME
-from typing import List
+# from typing import List
 import shutil
 import os
 
@@ -18,39 +18,31 @@ def home():
     }
 
 @app.post("/upload")
-def upload_pdf(files: List[UploadFile] = File(...)):
+def upload_pdf(file: UploadFile = File(...)):
+
+    print("Uploading:", file.filename)
 
     upload_dir = "uploads"
-
     os.makedirs(upload_dir, exist_ok=True)
 
-    uploaded_files = []
+    file_path = os.path.join(
+        upload_dir,
+        file.filename
+    )
 
-    for file in files:
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
 
-        file_path = os.path.join(
-            upload_dir,
-            file.filename
-        )
+    print("Saved to:", file_path)
 
-        with open(file_path, "wb") as buffer:
+    ingest_document(file_path)
 
-            shutil.copyfileobj(
-                file.file,
-                buffer
-            )
-
-        ingest_document(file_path)
-
-        uploaded_files.append(
-            file.filename
-        )
+    print("Ingestion finished")
 
     return {
-        "message": "Documents indexed successfully",
-        "uploaded_files": uploaded_files
+        "message": "Document indexed successfully",
+        "uploaded_file": file.filename
     }
-
 
 
 @app.post("/ask")
