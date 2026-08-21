@@ -2,9 +2,10 @@ from fastapi import FastAPI, UploadFile, File,HTTPException
 from vector_store import client,COLLECTION_NAME
 from fastapi.middleware.cors import CORSMiddleware
 # from typing import List
+from routes.chat import router as chat_router
 import shutil
 import os
-
+from database import client
 from ingest import ingest_document
 from ask import ask_questions
 
@@ -18,6 +19,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/test-db")
+async def test_db():
+    await client.admin.command("ping")
+    return {
+        "message":"MongoDB atlas connected successfully"
+    }
+
+app.include_router(chat_router)
 @app.get("/")
 def home():
 

@@ -1,6 +1,7 @@
 from typing import Optional
 from pydantic import BaseModel,Field
 
+
 class MedicalValue(BaseModel):
     name:str
     value:Optional[float]=None
