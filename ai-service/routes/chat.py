@@ -32,32 +32,27 @@ async def create_chat(data:CreateChatRequest,user_id:str):
 # get all chats
 @router.get("")
 async def get_chats(
-    user_id:str,
-    page:int=Query(1,ge=1,description="Page number"),
-    limit:int=Query(10,ge=1,le=100,description="Items per page")
-)->Dict[str,Any]:
-    chats=[]
+    user_id: str,
+    page: int = Query(1, ge=1, description="Page number"),
+    limit: int = Query(10, ge=1, le=100, description="Items per page")
+) -> List[Dict[str, Any]]:  # <--- Updated return type
+    chats = []
+    
+    skip = (page - 1) * limit
 
-    # skip value
-    skip=(page-1)*limit
-
-    # total matcing docuemnts
-    total_items=await chats_collection.count_documents({"user_id":user_id})
-
-    cursor=(
-        chats_collection.find(
-        {"user_id":user_id}
-    ).sort("updated_at",-1)
-    .skip(skip)
-    .limit(limit)
+    cursor = (
+        chats_collection.find({"user_id": user_id})
+        .sort("updated_at", -1)
+        .skip(skip)
+        .limit(limit)
     )
 
     async for chat in cursor:
         chats.append({
-            "chat_id":str(chat["_id"]),
-            "title":chat["title"],
-            "created_at":chat["created_at"],
-            "updated_at":chat["updated_at"]
+            "chat_id": str(chat["_id"]),
+            "title": chat.get("title", ""),
+            "created_at": chat.get("created_at"),
+            "updated_at": chat.get("updated_at")
         })
 
     return chats

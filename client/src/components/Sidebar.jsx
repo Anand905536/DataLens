@@ -2,20 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { FaPlus } from 'react-icons/fa'
 import Drawer from './Drawer.jsx'
 import { Spinner } from "@/components/ui/spinner";
+import axios from 'axios'
 
-const Sidebar = () => {
-  const [allChats, setAllChats] = useState([]);
-
-  setTimeout(() => {
-    const data = [
-      "MERN Stack demand",
-      "sdjds sdkjchfj kcjk",
-      "i",
-      "iuytresdxfghjnbvcxdsdftyuj",
-      "iuytresdxfghjnbvcxdsdftyuj"
-    ]
-    setAllChats(data)
-  }, 3000)
+const Sidebar = ({chatId,allChats,separateChat}) => {
 
   return (
     <div className='w-[230px] flex flex-col mt-6'  >
@@ -34,19 +23,18 @@ const Sidebar = () => {
       </div>
       <hr className='border-gray-500' />
       <div className=' mt-4'>
-      {
-        allChats.length > 0 ? allChats.map((data, idx) => {
-          return <div key={idx} className='hover:bg-[#212121] hover:cursor-pointer tracking-wider
+        {
+          allChats.length > 0 ? allChats.map((data, idx) => {
+            return <div key={idx} onClick={() => separateChat(data)} className='hover:bg-[#212121] hover:cursor-pointer tracking-wider
            flex items-center rounded-[7px] pl-1 text-gray-300 h-8 text-sm font-semibold'>
-            {data.length > 20 ? `${data.slice(0, 20)}` : data}
-            {/* <p className='flex items-end'>❌</p> */}
-          </div>
-        })
-          :
-          <div className=' h-20 flex justify-center mt-5'>
-            <Spinner className="h-6 w-6 mt- text-gray-500" />
-          </div>
-      }
+              {data.length > 20 ? `${data.title.slice(0, 20)}` : data.title}
+            </div>
+          })
+            :
+            <div className=' h-20 flex justify-center mt-5'>
+              <Spinner className="h-6 w-6 mt- text-gray-500" />
+            </div>
+        }
       </div>
     </div>
   )

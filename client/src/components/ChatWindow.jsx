@@ -4,47 +4,11 @@ import { useState, useEffect, useRef } from 'react'
 import { FaPlus } from "react-icons/fa6";
 import { IoArrowUp } from 'react-icons/io5'
 
-const Main = () => {
-  const [chat, setChat] = useState([])
-  const [text, setText] = useState("")
+const Main = ({chat,text,setText,ask_api_call}) => {
   const [file, setFile] = useState(null)
   const fileInputRef = useRef(null)
 
-
-  const ask_api_call = async () => {
-    if (!text.trim()) return;
-    const currentText = text;
-    setText("")
-    // console.log("api called")
-    try {
-      const res = await axios.post('http://127.0.0.1:8000/ask', null, {
-        params: {
-          question: currentText
-        },
-        headers: {
-          "Accept": 'application/json'
-        }
-      })
-      // console.log(res.data.answer.answer)
-      const question = res.data.answer.question
-      const answer = res.data.answer.answer
-      setChat(prev => [...prev, { text: question, sender: 'user' },
-      { text: answer, sender: 'ai' }])
-    } catch (err) {
-      console.error("error occured", err)
-    }
-  }
-
-
-  // const handle_Upload = async () => {
-
-  // }
-
-  // useEffect(() => {
-
-  // }, [])
-
-
+  
   return (
     <>
       <div className=' flex justify-end'>
@@ -61,10 +25,10 @@ const Main = () => {
               chat.length > 0 ?
                 (
                   chat.map((msg, idx) => (
-                    <div className={`flex items-center w-full max-w-2xl ${msg.sender === 'user' ? 'bg-gray-600 ml-auto' : 'bg-[#171717]'}
+                    <div className={`flex items-center w-full max-w-2xl ${msg.role === 'user' ? 'bg-gray-600 ml-auto' : 'bg-[#171717]'}
                     space-x-2 bg-[#171717] mr-auto rounded-3xl px-4 py-4 mb-3`}
                       key={idx}>
-                      <p className='w-full break-words whitespace-pre-wrap'>{msg.text}</p>
+                      <p className='w-full break-words whitespace-pre-wrap'>{msg.content}</p>
                     </div>
                   ))
                 )
@@ -99,7 +63,7 @@ const Main = () => {
             className="flex-grow rounded-full px-4 py-2 outline-none focus:ring-0 bg-[#171717] text-white"
           />
 
-          <button className="text-white bg-green-500 hover:bg-gray-500 hover:cursor-pointer rounded-full p-2" onClick={ask_api_call}>
+          <button className="text-white bg-green-500 hover:bg-gray-500 hover:cursor-pointer rounded-full p-2" onClick={ask_api_call} >
             <IoArrowUp />
           </button>
         </div>
